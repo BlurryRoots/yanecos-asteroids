@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <ProjectGuid>{97903801-AFD7-4EF0-AEDE-340609B8DEE8}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>BlurryRoots.Asteroid</RootNamespace>
+    <AssemblyName>Asteroid</AssemblyName>
+    <NoWin32Manifest>False</NoWin32Manifest>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <NoStdLib>False</NoStdLib>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <WarningLevel>4</WarningLevel>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <BaseAddress>4194304</BaseAddress>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <FileAlignment>4096</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>Full</DebugType>
+    <Optimize>False</Optimize>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DebugSymbols>False</DebugSymbols>
+    <DebugType>None</DebugType>
+    <Optimize>True</Optimize>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="OpenTK">
+      <HintPath>..\packages\OpenTK.1.1.1160.61462\lib\NET40\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\ClearOption.cs" />
+    <Compile Include="Data\FPSData.cs" />
+    <Compile Include="Data\MassData.cs" />
+    <Compile Include="Data\PlayerData.cs" />
+    <Compile Include="Data\RotationData.cs" />
+    <Compile Include="Data\ShapeData.cs" />
+    <Compile Include="Data\ShapeDataExtension.cs" />
+    <Compile Include="Data\ShipData.cs" />
+    <Compile Include="Data\SpatialData.cs" />
+    <Compile Include="Data\TextData.cs" />
+    <Compile Include="Data\VelocityData.cs" />
+    <Compile Include="EventManager.cs" />
+    <Compile Include="Events\KeyDownEventArgs.cs" />
+    <Compile Include="Events\KeyUpEventArgs.cs" />
+    <Compile Include="Events\ResizeEventArgs.cs" />
+    <Compile Include="Events\TriggerPulledEventArgs.cs" />
+    <Compile Include="Game.cs" />
+    <Compile Include="Processors\AsteroidSpawnProcessor.cs" />
+    <Compile Include="Processors\ClearProcessor.cs" />
+    <Compile Include="Processors\CollisionProcessor.cs" />
+    <Compile Include="Processors\MovementProcessor.cs" />
+    <Compile Include="Processors\PlayerControlProcessor.cs" />
+    <Compile Include="Processors\RenderTextProcessor.cs" />
+    <Compile Include="Processors\RenderShapeProcessor.cs" />
+    <Compile Include="Processors\WeaponProcessor.cs" />
+    <Compile Include="YanecosSharp\Properties\AssemblyInfo.cs" />
+    <Compile Include="YanecosSharp\Yanecos\Core\DataCenter.cs" />
+    <Compile Include="YanecosSharp\Yanecos\Core\DataCore.cs" />
+    <Compile Include="YanecosSharp\Yanecos\Core\DataProcessor.cs" />
+    <Compile Include="YanecosSharp\Yanecos\Core\DataProcessorManager.cs" />
+    <Compile Include="YanecosSharp\Yanecos\Core\Entity.cs" />
+    <Compile Include="YanecosSharp\Yanecos\Core\EntityDataEventArgs.cs" />
+    <Compile Include="YanecosSharp\Yanecos\Core\EntityEventArgs.cs" />
+    <Compile Include="YanecosSharp\Yanecos\Core\EntityManager.cs" />
+    <Compile Include="YanecosSharp\Yanecos\Core\IData.cs" />
+    <Compile Include="YanecosSharp\Yanecos\Core\IDataCenter.cs" />
+    <Compile Include="YanecosSharp\Yanecos\Core\IDataCore.cs" />
+    <Compile Include="YanecosSharp\Yanecos\Core\IDataProcessor.cs" />
+    <Compile Include="YanecosSharp\Yanecos\Core\IDataProcessorManager.cs" />
+    <Compile Include="YanecosSharp\Yanecos\Core\IEntity.cs" />
+    <Compile Include="YanecosSharp\Yanecos\Core\IEntityManager.cs" />
+    <Compile Include="YanecosSharp\Yanecos\Exception\EntityAlreadyHoldsDataException.cs" />
+    <Compile Include="YanecosSharp\Yanecos\Exception\EntityDoesNotHoldDataException.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="YanecosSharp\" />
+  </ItemGroup>
+</Project>
