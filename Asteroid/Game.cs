@@ -184,11 +184,13 @@
 					)
 			);
 
+			var timeToWaitForToSpawn = 0.5;
 			this.DataCenter.AddProcessor (
 					new AsteroidSpawnProcessor (
 							this.eventManager,
 							this.Width,
-							this.Height
+							this.Height,
+							timeToWaitForToSpawn
 					)
 			);
 

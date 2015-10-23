@@ -87,25 +87,25 @@
 					movement += dir * this.Speed;
 				}
 
-				if (this.keysDown.Contains (Key.A)) {
-					movement += dir.PerpendicularRight * this.Speed;
-				}
+				//if (this.keysDown.Contains (Key.A)) {
+				//	movement += dir.PerpendicularRight * this.Speed;
+				//}
 
 				if (this.keysDown.Contains (Key.S)) {
 					movement += -1 * dir * this.Speed;
 				}
 
-				if (this.keysDown.Contains (Key.D)) {
-					movement += dir.PerpendicularLeft * this.Speed;
-				}
+				//if (this.keysDown.Contains (Key.D)) {
+				//	movement += dir.PerpendicularLeft * this.Speed;
+				//}
 
 				//
 				float rotationDirection = 0;
-				if (this.keysDown.Contains (Key.Left)) {
+				if (this.keysDown.Contains (Key.A)) {
 					rotationDirection -= 1;
 				}
 
-				if (this.keysDown.Contains (Key.Right)) {
+				if (this.keysDown.Contains (Key.D)) {
 					rotationDirection += 1;
 				}
 

@@ -34,17 +34,26 @@
 		private
 		int screenHeight;
 
+		private
+		double spawnTimeToWait;
+		private
+		double spawnTimeAccu;
+
 		public
 		AsteroidSpawnProcessor (
 			EventManager someEventManager,
 			int someWidth,
-			int someHeight) {
+			int someHeight,
+			double someSpawnTimeToWait) {
 			this.eventManager = someEventManager;
 
 			this.random = new Random ();
 
 			this.screenWidth = someWidth;
 			this.screenHeight = someHeight;
+
+			this.spawnTimeToWait = someSpawnTimeToWait;
+			this.spawnTimeAccu = 0;
 
 			this.eventManager.AddHandler<ResizeEventArgs> (
 					this.OnResize
@@ -63,17 +72,13 @@
 
 		protected override
 		void OnProcessing (double someDeltaTime) {
-			List<IEntity> asteroids = this.GetAsteroids ();
-
-			if (asteroids.Count < this.MaxAsteroids) {
-				this.CreateAsteroid ();
-			}
+			var asteroids = this.GetAsteroids ();
 
 			if (asteroids.Count > 0) {
-				List<ulong> removeList = new List<ulong> ();
+				var removeList = new List<ulong> ();
 
-				foreach (IEntity asteroid in asteroids) {
-					SpatialData sd = asteroid.GetData<SpatialData> ();
+				foreach (var asteroid in asteroids) {
+					var sd = asteroid.GetData<SpatialData> ();
 
 					if (sd.X >= this.screenWidth || sd.X < 0 || sd.Y >= this.screenHeight || sd.Y < 0) {
 						removeList.Add (asteroid.ID);
@@ -83,6 +88,17 @@
 				foreach (ulong id in removeList) {
 					this.DataCenter.EntityManager.RemoveEntity (id);
 				}
+			}
+
+			if (this.spawnTimeAccu >= this.spawnTimeToWait) {
+				this.spawnTimeAccu = 0;
+
+				if (asteroids.Count < this.MaxAsteroids) {
+					this.CreateAsteroid ();
+				}
+			}
+			else {
+				this.spawnTimeAccu += someDeltaTime;
 			}
 		}
 
@@ -194,7 +210,7 @@
 
 		private
 		void CreateAsteroid () {
-			object[] posAndVel = this.CreatePositionAndVelocity ();
+		object[] posAndVel = this.CreatePositionAndVelocity ();
 
 			IEntity e = this.DataCenter.CreateEntity ();
 			e.Tag = "Asteroid";
@@ -213,7 +229,7 @@
 		}
 
 		private
-				void OnResize (object someSender, ResizeEventArgs someArgument) {
+			void OnResize (object someSender, ResizeEventArgs someArgument) {
 			this.screenWidth = someArgument.Width;
 			this.screenHeight = someArgument.Height;
 		}
