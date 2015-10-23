@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="license.md" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -108,7 +109,5 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="YanecosSharp\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>
