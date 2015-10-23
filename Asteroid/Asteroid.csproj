@@ -73,6 +73,7 @@
     <Compile Include="EventManager.cs" />
     <Compile Include="Events\KeyDownEventArgs.cs" />
     <Compile Include="Events\KeyUpEventArgs.cs" />
+    <Compile Include="Events\PlayerHitEvent.cs" />
     <Compile Include="Events\ResizeEventArgs.cs" />
     <Compile Include="Events\TriggerPulledEventArgs.cs" />
     <Compile Include="Game.cs" />

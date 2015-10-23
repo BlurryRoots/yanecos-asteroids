@@ -21,21 +21,21 @@
 	/// Entry point for the game.
 	/// </summary>
 	public
-			class Game : GameWindow {
+	class Game : GameWindow {
 
 		/// <summary>
 		/// Starting point of application.
 		/// </summary>
 		/// <param name="parameters">Command line paramters.</param>
 		public static
-				void Main (string[] parameters) {
+		void Main (string[] parameters) {
 			using (Game g = new Game ()) {
 				g.Run ();
 			}
 		}
 
 		public
-				Game () {
+		Game () {
 			this.DataCenter = new DataCenter (
 					new EntityManager (),
 					new DataProcessorManager (),
@@ -53,7 +53,7 @@
 		/// </summary>
 		/// <param name="e">Event data.</param>
 		protected override
-				void OnLoad (EventArgs e) {
+		void OnLoad (EventArgs e) {
 			base.OnLoad (e);
 
 			foreach (JoystickDevice js in this.Joysticks) {
@@ -71,8 +71,14 @@
 			this.Keyboard.KeyDown += this.PublishKeyDown;
 			this.Keyboard.KeyUp += this.PublishKeyUp;
 
+			this.eventManager.AddHandler<PlayerHitEvent> (this.OnPlayerHit);
+
 			this.SetupProcessors ();
 			this.SetupEntities ();
+		}
+
+		void OnPlayerHit (object sender, PlayerHitEvent e) {
+			Console.Write ("Player hit by: " + e);
 		}
 
 		/// <summary>
@@ -80,7 +86,7 @@
 		/// </summary>
 		/// <param name="e">Event data.</param>
 		protected override
-				void OnUpdateFrame (FrameEventArgs e) {
+		void OnUpdateFrame (FrameEventArgs e) {
 			base.OnUpdateFrame (e);
 
 			this.ProcessEvents ();
@@ -108,7 +114,7 @@
 		/// </summary>
 		/// <param name="e">Event data.</param>
 		protected override
-				void OnRenderFrame (FrameEventArgs e) {
+		void OnRenderFrame (FrameEventArgs e) {
 			base.OnRenderFrame (e);
 
 			this.DataCenter.GetProcessor<ClearProcessor> ().Process ();
@@ -125,7 +131,7 @@
 		/// </summary>
 		/// <param name="e">Event data.</param>
 		protected override
-				void OnResize (EventArgs e) {
+		void OnResize (EventArgs e) {
 			base.OnResize (e);
 
 			int someWidth = this.Width;
@@ -152,7 +158,7 @@
 		/// Prepare all processors.
 		/// </summary>
 		private
-				void SetupProcessors () {
+		void SetupProcessors () {
 			this.DataCenter.AddProcessor (
 					new ClearProcessor ()
 			);
@@ -203,7 +209,7 @@
 			);
 
 			this.DataCenter.AddProcessor (
-					new CollisionProcessor ()
+					new CollisionProcessor (this.eventManager)
 			);
 		}
 
@@ -211,7 +217,7 @@
 		/// Setup any entities needed on startup.
 		/// </summary>
 		private
-				void SetupEntities () {
+		void SetupEntities () {
 			this.DataCenter.CreateEntity (
 				new IData[] {
           new SpatialData( 42, 84 ),
@@ -249,7 +255,7 @@
 		/// Factory methdo to create player entity.
 		/// </summary>
 		private
-				void CreatePlayer () {
+		void CreatePlayer () {
 			IEntity e = this.DataCenter.CreateEntity ();
 			e.Tag = "Player";
 			e.AddData (new PlayerData ("Sfehn"));
@@ -275,7 +281,7 @@
 		/// <param name="sender">Sender.</param>
 		/// <param name="e">Event data.</param>
 		private
-				void PublishKeyUp (object sender, KeyboardKeyEventArgs e) {
+		void PublishKeyUp (object sender, KeyboardKeyEventArgs e) {
 			this.eventManager.PublishEvent (
 					this,
 					new KeyUpEventArgs (e)
@@ -288,7 +294,7 @@
 		/// <param name="sender">Sender.</param>
 		/// <param name="e">Event data.</param>
 		private
-				void PublishKeyDown (object sender, KeyboardKeyEventArgs e) {
+		void PublishKeyDown (object sender, KeyboardKeyEventArgs e) {
 			this.eventManager.PublishEvent (
 					this,
 					new KeyDownEventArgs (e)
@@ -300,13 +306,13 @@
 		/// Central control point for yanecos.
 		/// </summary>
 		private
-				IDataCenter DataCenter { get; set; }
+		IDataCenter DataCenter { get; set; }
 
 		/// <summary>
 		/// Event queue.
 		/// </summary>
 		private
-				EventManager eventManager;
+		EventManager eventManager;
 
 	}
 
