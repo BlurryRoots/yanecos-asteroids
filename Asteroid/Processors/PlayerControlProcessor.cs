@@ -17,7 +17,7 @@
 	class PlayerControlProcessor : DataProcessor {
 
 		private
-		float Speed = 333.0f;
+		float Speed = 266.0f;
 
 		private
 		EventManager EventManager { get; set; }
@@ -71,18 +71,19 @@
 		void OnProcessing (double someDeltaTime) {
 			this.CheckKeys ();
 
-			foreach (IEntity entity in this.DataCenter.GetEntities (this.interestList)) {
-				SpatialData spatial = entity.GetData<SpatialData> ();
-				VelocityData sd = entity.GetData<VelocityData> ();
+			var entities = this.DataCenter.GetEntities (this.interestList);
+			foreach (var e in entities) {
+				var spatial = e.GetData<SpatialData> ();
+				var sd = e.GetData<VelocityData> ();
 
-				float radiants = (float)(Math.PI / 180.0) * (spatial.Rotation);
-				Vector2 dir = new Vector2 (
+				var radiants = (float)(Math.PI / 180.0) * (spatial.Rotation);
+				var dir = new Vector2 (
 						(float)Math.Cos (radiants),
 						(float)Math.Sin (radiants)
 				);
 
 				//        
-				Vector2 movement = new Vector2 ();
+				var movement = new Vector2 ();
 				if (this.keysDown.Contains (Key.W)) {
 					movement += dir * this.Speed;
 				}
@@ -100,7 +101,7 @@
 				//}
 
 				//
-				float rotationDirection = 0;
+				var rotationDirection = 0f;
 				if (this.keysDown.Contains (Key.A)) {
 					rotationDirection -= 1;
 				}
@@ -133,7 +134,7 @@
 
 		private
 		void CheckKeys () {
-			foreach (Key k in this.AvailableKeys) {
+			foreach (var k in this.AvailableKeys) {
 				if (this.Keyboard[k]) {
 					if (!this.keysDown.Contains (k)) {
 						this.keysDown.Add (k);

@@ -29,19 +29,13 @@
 		/// <param name="parameters">Command line paramters.</param>
 		public static
 		void Main (string[] parameters) {
-			using (Game g = new Game ()) {
+			using (var g = new Game ()) {
 				g.Run ();
 			}
 		}
 
 		public
 		Game () {
-			this.DataCenter = new DataCenter (
-					new EntityManager (),
-					new DataProcessorManager (),
-					new DataCore ()
-			);
-
 			this.eventManager = new EventManager ();
 
 			this.TargetRenderFrequency = 10000;
@@ -72,13 +66,32 @@
 			this.Keyboard.KeyUp += this.PublishKeyUp;
 
 			this.eventManager.AddHandler<PlayerHitEvent> (this.OnPlayerHit);
+			this.eventManager.AddHandler<KeyUpEventArgs> (this.OnKeyUp);
 
-			this.SetupProcessors ();
-			this.SetupEntities ();
+			this.Restart ();
 		}
 
+		/// <summary>
+		/// Event handler for key up events.
+		/// </summary>
+		/// <param name="sender">Event sender.</param>
+		/// <param name="e">Event args.</param>
+		void OnKeyUp (object sender, KeyUpEventArgs e) {
+			switch (e.KeyArgs.Key) {
+				case Key.Escape:
+					this.Exit ();
+					break;
+			}
+		}
+
+		/// <summary>
+		/// Event handler for player hit event.
+		/// </summary>
+		/// <param name="sender">Event sender.</param>
+		/// <param name="e">Event args.</param>
 		void OnPlayerHit (object sender, PlayerHitEvent e) {
 			Console.Write ("Player hit by: " + e);
+			this.Restart ();
 		}
 
 		/// <summary>
@@ -154,6 +167,18 @@
 			);
 		}
 
+		private
+		void Restart () {
+			this.DataCenter = new DataCenter (
+					new EntityManager (),
+					new DataProcessorManager (),
+					new DataCore ()
+			);
+
+			this.SetupProcessors ();
+			this.SetupEntities ();
+		}
+
 		/// <summary>
 		/// Prepare all processors.
 		/// </summary>
@@ -186,7 +211,9 @@
 
 			this.DataCenter.AddProcessor (
 					new MovementProcessor (
-							this.eventManager
+							this.eventManager,
+							this.Width,
+							this.Height
 					)
 			);
 
@@ -219,23 +246,14 @@
 		private
 		void SetupEntities () {
 			this.DataCenter.CreateEntity (
-				new IData[] {
-          new SpatialData( 42, 84 ),
-          new TextData() {
-            Text = "0.0 FPS",
-            Font = new Font ("Arial", 12, FontStyle.Regular),
-            Brush = Brushes.Red
-          }
-        }
-			).Tag = "FPS";
-
-			this.DataCenter.CreateEntity (
 					new IData[] {
             new ClearOptionData () {
                 Color = Color4.Black
             }
           }
 			);
+
+			this.CreatePlayer ();
 
 			this.DataCenter.CreateEntity (
 				new IData[] {
@@ -248,7 +266,16 @@
         }
 			);
 
-			this.CreatePlayer ();
+			this.DataCenter.CreateEntity (
+				new IData[] {
+          new SpatialData( 42, 84 ),
+          new TextData() {
+            Text = "0.0 FPS",
+            Font = new Font ("Arial", 12, FontStyle.Regular),
+            Brush = Brushes.Red
+          }
+        }
+			).Tag = "FPS";
 		}
 
 		/// <summary>
@@ -256,7 +283,8 @@
 		/// </summary>
 		private
 		void CreatePlayer () {
-			IEntity e = this.DataCenter.CreateEntity ();
+			var e = this.DataCenter.CreateEntity ();
+
 			e.Tag = "Player";
 			e.AddData (new PlayerData ("Sfehn"));
 			e.AddData (new SpatialData (256, 128));
